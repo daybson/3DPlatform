@@ -19,5 +19,6 @@ public class IdleState : State
     public override void OnEnable()
     {
         print($"{this.GetType().Name} Enabled");
+        this.animator.SetFloat("Velocity", 0);
     }
 }

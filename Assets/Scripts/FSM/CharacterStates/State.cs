@@ -10,6 +10,16 @@ using UnityEngine;
 /// </summary>
 public abstract class State : MonoBehaviour, IState
 {
+    [SerializeField] protected Animator animator;
+    [SerializeField] protected CharacterController charControl;
+
+    protected virtual void Awake()
+    {
+        print("Awake");
+        animator = GetComponentInChildren<Animator>() ?? GetComponent<Animator>();
+        charControl = GetComponent<CharacterController>();
+    }
+
     public abstract int Type { get; }
 
     public abstract void OnDisable();

@@ -69,7 +69,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7efed56371beef14681fb1380497f0dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharacterActionController: {fileID: 0}
+  stateControl: {fileID: 0}
   WalkSpeed: 7
   JumpSpeed: 4
   MaxVerticalSpeed: 10
@@ -91,6 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   states: []
+  animator: {fileID: 0}
 --- !u!114 &1890034000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,6 +104,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3a91aef0edc9c143834b4b62e61b8c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  charControl: {fileID: 0}
+  WalkSpeed: 0
 --- !u!114 &1890034001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,6 +119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 870dafd693e89a34e9b98b7a475c28b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  charControl: {fileID: 0}
 --- !u!114 &1890034002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,6 +133,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0beb104c8edc3fa49aa825972a77690d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  charControl: {fileID: 0}
+  sword: {fileID: 0}
 --- !u!114 &1890034003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,6 +148,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cd6dd072ae9f7a41a239238ab631573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  charControl: {fileID: 0}
+  JumpTime: 0
+  JumpSpeed: 0
+  MaxVerticalSpeed: 0
 --- !u!114 &1890034004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,6 +165,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f4d76fbee15f2d4685f57073a6415f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  charControl: {fileID: 0}
 --- !u!65 &1458389839
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -197,19 +213,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &618063315
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6592636197624850424}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfb487612ee64484ba2ca7fb9e4b10cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Animator: {fileID: 0}
 --- !u!1001 &2908290337304805105
 PrefabInstance:
   m_ObjectHideFlags: 0

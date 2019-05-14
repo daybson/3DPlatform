@@ -9,40 +9,48 @@ using UnityEngine;
 [RequireComponent(typeof(AttackState))]
 public class StateController : MonoBehaviour
 {
-    [SerializeField]
-    private List<State> states;
-    private int currentState;
+    [SerializeField] public List<State> states;
+    public int CurrentState { get; private set; }
+    [SerializeField] protected Animator animator;
+    public Animator Animator => animator;
 
     private void Awake()
     {
-        this.states.Insert(StateType.IDLE, GetComponent<IdleState>());
-        this.states.Insert(StateType.WALK, GetComponent<WalkState>());
-        this.states.Insert(StateType.RUN, GetComponent<RunState>());
-        this.states.Insert(StateType.JUMP, GetComponent<JumpState>());
+        this.animator = GetComponentInChildren<Animator>() ?? GetComponent<Animator>();
+
+        this.states.Insert(StateType.IDLE,   GetComponent<IdleState>());
+        this.states.Insert(StateType.WALK,   GetComponent<WalkState>());
+        this.states.Insert(StateType.RUN,    GetComponent<RunState>());
+        this.states.Insert(StateType.JUMP,   GetComponent<JumpState>());
         this.states.Insert(StateType.ATTACK, GetComponent<AttackState>());
 
         //Desabilita todos inicialmente
         states.ForEach(s => s.enabled = false);
 
         //Inicia em Idle
-        this.currentState = StateType.IDLE;
-        this.states[this.currentState].enabled = true;
+        this.CurrentState = StateType.IDLE;
+        this.states[this.CurrentState].enabled = true;
     }
 
     /// <summary>
     /// Realiza a transição de um estado para o outro, desativando o estado atual e ativando o novo
     /// </summary>
-    /// <param name="stateType">Novo estado para o qual se quer alterar</param>
-    public void ChangeState(int stateType)
+    /// <param name="newStateType">Novo estado para o qual se quer alterar</param>
+    public void ChangeState(int newStateType)
     {
-        var newState = this.states[stateType];
+        if (CurrentState == newStateType)
+            return;
 
-        if (CanChangeTo(newState))
+        var newState = this.states[newStateType];
+        if (!CanChangeTo(newState))
         {
-            this.states[currentState].enabled = false;
-            this.currentState = newState.Type;
-            newState.enabled = true;
+            Debug.LogWarning($"Transition from {this.states[this.CurrentState].GetType().Name} to {newState.GetType().Name} not allowed!");
+            return;
         }
+
+        this.states[CurrentState].enabled = false;
+        this.CurrentState = newState.Type;
+        newState.enabled = true;
     }
 
 
@@ -60,7 +68,7 @@ public class StateController : MonoBehaviour
     /// <returns>Transição permitida ou não</returns>
     private bool CanChangeTo(IState newState)
     {
-        switch (currentState)
+        switch (CurrentState)
         {
             case StateType.IDLE:
                 return newState.Type == StateType.ATTACK ||
@@ -92,5 +100,4 @@ public class StateController : MonoBehaviour
                 return false;
         }
     }
-
 }

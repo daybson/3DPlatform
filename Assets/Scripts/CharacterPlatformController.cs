@@ -6,7 +6,7 @@ using UnityEngine;
 public class CharacterPlatformController : MonoBehaviour
 {
     private CharacterController charControl;
-    public CharacterActionController CharacterActionController;
+    public StateController stateControl;
 
     private readonly string axisFoward = "Horizontal";
     private float moveZ;
@@ -24,61 +24,57 @@ public class CharacterPlatformController : MonoBehaviour
     public float Gravity;
     public float MaxFallSpeed;
 
+    public static float InputX { get; private set; }
 
     private void Awake()
     {
-        charControl = GetComponent<CharacterController>();
-        CharacterActionController = GetComponentInChildren<CharacterActionController>();
+        this.charControl = GetComponent<CharacterController>();
+        this.stateControl = GetComponentInChildren<StateController>();
     }
 
     private void Update()
     {
-        var input = Input.GetAxisRaw(axisFoward);
+        InputX = Input.GetAxisRaw(axisFoward);
 
-        if (Input.GetKeyDown(KeyCode.Space) && charControl.isGrounded)
+
+
+        if (this.stateControl.CurrentState == StateType.JUMP)
         {
-            CharacterActionController.Animator.SetBool("Jump", true);
-            currJumpTime = 0;
-            isGoingUp = true;
+            if (!((JumpState)this.stateControl.states[StateType.JUMP]).IsGoingUp)
+            {
+                this.stateControl.ChangeState(StateType.IDLE);
+            }
         }
-
-        if (isGoingUp)
-            ProcessJumping();
-        else
+        else if (this.stateControl.CurrentState != StateType.JUMP)
+        {
             ProcessGravity();
 
-        moveY = currVerticalSpeed;
-        moveZ = WalkSpeed * input;
+            if (Input.GetKeyDown(KeyCode.Space) && charControl.isGrounded)
+                this.stateControl.ChangeState(StateType.JUMP);
+            else
+            {
+                if (!((AttackState)this.stateControl.states[StateType.ATTACK]).sword.IsAtacking)
+                {
+                    if (InputX != 0)
+                        this.stateControl.ChangeState(StateType.WALK);
+                    else
+                        this.stateControl.ChangeState(StateType.IDLE);
+                }
 
-        
-        CharacterActionController.Animator.SetFloat("Velocity", charControl.velocity.sqrMagnitude);
-        if (input != 0)
-        {
-            transform.forward = input * Vector3.forward;
+                if (Input.GetMouseButtonDown(0))
+                    this.stateControl.ChangeState(StateType.ATTACK);
+            }
         }
-
-        charControl.Move(new Vector3(0, moveY, moveZ) * Time.deltaTime);
-    }
-
-
-    private void ProcessJumping()
-    {
-        currJumpTime += Time.deltaTime;
-        currVerticalSpeed += JumpSpeed;
-
-        if (currVerticalSpeed > MaxVerticalSpeed)
-            currVerticalSpeed = MaxVerticalSpeed;
-
-        isGoingUp = currJumpTime < JumpTime;
     }
 
 
     private void ProcessGravity()
     {
-        CharacterActionController.Animator.SetBool("Jump", false);
         currVerticalSpeed -= Gravity;
 
         if (currVerticalSpeed < -MaxFallSpeed)
             currVerticalSpeed = -MaxFallSpeed;
+
+        charControl.Move(new Vector3(0, currVerticalSpeed, 0) * Time.deltaTime);
     }
 }
