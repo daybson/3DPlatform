@@ -36,7 +36,7 @@ public class CharacterPlatformController : MonoBehaviour
     {
         InputX = Input.GetAxisRaw(axisFoward);
 
-
+        /*
 
         if (this.stateControl.CurrentState == StateType.JUMP)
         {
@@ -65,10 +65,11 @@ public class CharacterPlatformController : MonoBehaviour
                     this.stateControl.ChangeState(StateType.ATTACK);
             }
         }
+        */
     }
 
 
-    private void ProcessGravity()
+    public void ProcessGravity()
     {
         currVerticalSpeed -= Gravity;
 

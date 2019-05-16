@@ -19,6 +19,20 @@ public class AttackState : State
     public override void Update()
     {
         print($"{this.GetType().Name} Update");
+
+        this.characterPlatformController.ProcessGravity();
+
+        if (!this.sword.IsAtacking)
+        {
+            //walk -> jump
+            if (Input.GetKeyDown(KeyCode.Space) && this.charControl.isGrounded)
+                this.stateControl.ChangeState(StateType.JUMP);
+
+            if (CharacterPlatformController.InputX != 0)
+                this.stateControl.ChangeState(StateType.WALK);
+            else
+                this.stateControl.ChangeState(StateType.IDLE);
+        }
     }
 
     public override void OnDisable()

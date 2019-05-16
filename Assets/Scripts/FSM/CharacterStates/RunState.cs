@@ -12,6 +12,7 @@ public class RunState : State
     public override void Update()
     {
         print($"{this.GetType().Name} Update");
+        this.characterPlatformController.ProcessGravity();
     }
 
     public override void OnDisable()

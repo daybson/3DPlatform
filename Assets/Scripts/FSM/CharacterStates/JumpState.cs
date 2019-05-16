@@ -31,6 +31,9 @@ public class JumpState : State
         IsGoingUp = currJumpTime < JumpTime;
 
         charControl.Move(new Vector3(0, currVerticalSpeed, 0) * Time.deltaTime);
+
+        if (!IsGoingUp)
+            this.stateControl.ChangeState(StateType.IDLE);
     }
 
     public override void OnDisable()
