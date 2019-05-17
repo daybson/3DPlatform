@@ -9,7 +9,6 @@ public class JumpState : State
 {
     public override StateType Type => StateType.Jump;
 
-
     public bool IsGoingUp { get; private set; }
 
     private float currJumpTime;
@@ -21,6 +20,8 @@ public class JumpState : State
     public override void Update()
     {
         print($"{this.GetType().Name} Update");
+
+        transform.parent = null;
 
         currJumpTime += Time.deltaTime;
         currVerticalSpeed += JumpSpeed;
