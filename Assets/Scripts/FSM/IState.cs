@@ -10,7 +10,7 @@ public interface IState
     /// <summary>
     /// Tipo do estado definido em StateType
     /// </summary>
-    int Type { get; }
+    StateType Type { get; }
 
     /// <summary>
     /// Executado ao entrar no estado

@@ -21,6 +21,7 @@ public class CameraFollow : MonoBehaviour
     private void Awake()
     {
         cam = GetComponent<Camera>();
+        Target = FindObjectOfType<CharacterController>().transform;
     }
 
     private void LateUpdate()

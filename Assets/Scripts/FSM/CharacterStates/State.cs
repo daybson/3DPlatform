@@ -24,7 +24,7 @@ public abstract class State : MonoBehaviour, IState
         characterPlatformController = GetComponent<CharacterPlatformController>();
     }
 
-    public abstract int Type { get; }
+    public abstract StateType Type { get; }
 
     public abstract void OnDisable();
 

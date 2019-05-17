@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class JumpState : State
 {
-    public override int Type => StateType.JUMP;
+    public override StateType Type => StateType.Jump;
 
 
     public bool IsGoingUp { get; private set; }
@@ -33,7 +33,7 @@ public class JumpState : State
         charControl.Move(new Vector3(0, currVerticalSpeed, 0) * Time.deltaTime);
 
         if (!IsGoingUp)
-            this.stateControl.ChangeState(StateType.IDLE);
+            this.stateControl.ChangeState(StateType.Idle);
     }
 
     public override void OnDisable()

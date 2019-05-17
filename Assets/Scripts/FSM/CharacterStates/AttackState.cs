@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class AttackState : State
 {
-    public override int Type => StateType.ATTACK;
+    public override StateType Type => StateType.Attack;
     public Sword sword;
 
     protected override void Awake()
@@ -26,12 +26,12 @@ public class AttackState : State
         {
             //walk -> jump
             if (Input.GetKeyDown(KeyCode.Space) && this.charControl.isGrounded)
-                this.stateControl.ChangeState(StateType.JUMP);
+                this.stateControl.ChangeState(StateType.Jump);
 
             if (CharacterPlatformController.InputX != 0)
-                this.stateControl.ChangeState(StateType.WALK);
+                this.stateControl.ChangeState(StateType.Walk);
             else
-                this.stateControl.ChangeState(StateType.IDLE);
+                this.stateControl.ChangeState(StateType.Idle);
         }
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class IdleState : State
 {
-    public override int Type => StateType.IDLE;
+    public override StateType Type => StateType.Idle;
 
     public override void Update()
     {
@@ -13,15 +13,15 @@ public class IdleState : State
 
         //idle -> jump
         if (Input.GetKeyDown(KeyCode.Space) && this.charControl.isGrounded)
-            this.stateControl.ChangeState(StateType.JUMP);
+            this.stateControl.ChangeState(StateType.Jump);
 
         //idle -> attack
         if (Input.GetMouseButtonDown(0))
-            this.stateControl.ChangeState(StateType.ATTACK);
+            this.stateControl.ChangeState(StateType.Attack);
 
         //idle -> walk
         if (CharacterPlatformController.InputX != 0)
-            this.stateControl.ChangeState(StateType.WALK);
+            this.stateControl.ChangeState(StateType.Walk);
     }
 
     public override void OnDisable()

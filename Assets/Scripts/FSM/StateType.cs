@@ -1,8 +1,8 @@
-﻿public class StateType
+﻿public enum StateType
 {
-    public const int IDLE = 0;
-    public const int WALK = 1;
-    public const int RUN = 2;
-    public const int JUMP = 3;
-    public const int ATTACK = 4;
+    Idle = 0,
+    Walk = 1,
+    Run = 2,
+    Jump = 3,
+    Attack = 4
 }

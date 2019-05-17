@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WalkState : State
 {
-    public override int Type => StateType.WALK;
+    public override StateType Type => StateType.Walk;
     public float WalkSpeed;
 
     public override void Update()
@@ -18,15 +18,15 @@ public class WalkState : State
 
         //walk -> idle
         if (CharacterPlatformController.InputX == 0)
-            this.stateControl.ChangeState(StateType.IDLE);
+            this.stateControl.ChangeState(StateType.Idle);
 
         //walk -> jump
         else if (Input.GetKeyDown(KeyCode.Space) && this.charControl.isGrounded)
-            this.stateControl.ChangeState(StateType.JUMP);
+            this.stateControl.ChangeState(StateType.Jump);
 
         //walk -> attack
         else if (Input.GetMouseButtonDown(0))
-            this.stateControl.ChangeState(StateType.ATTACK);
+            this.stateControl.ChangeState(StateType.Attack);
 
         print("SPACE "+ (Input.GetKeyDown(KeyCode.Space) && this.charControl.isGrounded).ToString());
     }

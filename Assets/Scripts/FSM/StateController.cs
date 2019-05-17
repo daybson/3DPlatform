@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [RequireComponent(typeof(IdleState))]
 [RequireComponent(typeof(WalkState))]
@@ -9,39 +10,45 @@ using UnityEngine;
 [RequireComponent(typeof(AttackState))]
 public class StateController : MonoBehaviour
 {
-    [SerializeField] public List<State> states;
-    public int CurrentState { get; private set; }
-    [SerializeField] protected Animator animator;
+    [SerializeField]
+    public Dictionary<StateType, State> states = new Dictionary<StateType, State>();
+
+    public StateType CurrentState { get; private set; }
+
+    [SerializeField]
+    protected Animator animator;
     public Animator Animator => animator;
 
     private void Awake()
     {
         this.animator = GetComponentInChildren<Animator>() ?? GetComponent<Animator>();
 
-        this.states.Insert(StateType.IDLE,   GetComponent<IdleState>());
-        this.states.Insert(StateType.WALK,   GetComponent<WalkState>());
-        this.states.Insert(StateType.RUN,    GetComponent<RunState>());
-        this.states.Insert(StateType.JUMP,   GetComponent<JumpState>());
-        this.states.Insert(StateType.ATTACK, GetComponent<AttackState>());
+        this.states.Add(StateType.Idle, GetComponent<IdleState>());
+        this.states.Add(StateType.Walk, GetComponent<WalkState>());
+        this.states.Add(StateType.Run, GetComponent<RunState>());
+        this.states.Add(StateType.Jump, GetComponent<JumpState>());
+        this.states.Add(StateType.Attack, GetComponent<AttackState>());
 
         //Desabilita todos inicialmente
-        states.ForEach(s => s.enabled = false);
+        foreach (var s in this.states.Values)
+            s.enabled = false;
 
         //Inicia em Idle
-        this.CurrentState = StateType.IDLE;
+        this.CurrentState = StateType.Idle;
         this.states[this.CurrentState].enabled = true;
     }
 
     /// <summary>
     /// Realiza a transição de um estado para o outro, desativando o estado atual e ativando o novo
     /// </summary>
-    /// <param name="newStateType">Novo estado para o qual se quer alterar</param>
-    public void ChangeState(int newStateType)
+    /// <param name="newStateID">Novo estado para o qual se quer alterar</param>
+    public void ChangeState(StateType newStateID)
     {
-        if (CurrentState == newStateType)
+        if (CurrentState == newStateID)
             return;
 
-        var newState = this.states[newStateType];
+        var newState = this.states[newStateID];
+
         if (!CanChangeTo(newState))
         {
             Debug.LogWarning($"Transition from {this.states[this.CurrentState].GetType().Name} to {newState.GetType().Name} not allowed!");
@@ -49,7 +56,7 @@ public class StateController : MonoBehaviour
         }
 
         this.states[CurrentState].enabled = false;
-        this.CurrentState = newState.Type;
+        this.CurrentState = newStateID;
         newState.enabled = true;
     }
 
@@ -70,31 +77,31 @@ public class StateController : MonoBehaviour
     {
         switch (CurrentState)
         {
-            case StateType.IDLE:
-                return newState.Type == StateType.ATTACK ||
-                       newState.Type == StateType.WALK ||
-                       newState.Type == StateType.RUN ||
-                       newState.Type == StateType.JUMP;
+            case StateType.Idle:
+                return newState.Type == StateType.Attack ||
+                       newState.Type == StateType.Walk ||
+                       newState.Type == StateType.Run ||
+                       newState.Type == StateType.Jump;
 
-            case StateType.ATTACK:
-                return newState.Type == StateType.IDLE ||
-                       newState.Type == StateType.WALK ||
-                       newState.Type == StateType.RUN;
+            case StateType.Attack:
+                return newState.Type == StateType.Idle ||
+                       newState.Type == StateType.Walk ||
+                       newState.Type == StateType.Run;
 
-            case StateType.WALK:
-                return newState.Type == StateType.ATTACK ||
-                       newState.Type == StateType.RUN ||
-                       newState.Type == StateType.IDLE ||
-                       newState.Type == StateType.JUMP;
+            case StateType.Walk:
+                return newState.Type == StateType.Attack ||
+                       newState.Type == StateType.Run ||
+                       newState.Type == StateType.Idle ||
+                       newState.Type == StateType.Jump;
 
-            case StateType.RUN:
-                return newState.Type == StateType.ATTACK ||
-                       newState.Type == StateType.WALK ||
-                       newState.Type == StateType.IDLE ||
-                       newState.Type == StateType.JUMP;
+            case StateType.Run:
+                return newState.Type == StateType.Attack ||
+                       newState.Type == StateType.Walk ||
+                       newState.Type == StateType.Idle ||
+                       newState.Type == StateType.Jump;
 
-            case StateType.JUMP:
-                return newState.Type == StateType.IDLE;
+            case StateType.Jump:
+                return newState.Type == StateType.Idle;
 
             default:
                 return false;

@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class RunState : State
 {
-    public override int Type => StateType.RUN;
+    public override StateType Type => StateType.Run;
 
     public override void Update()
     {
