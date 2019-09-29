@@ -18,6 +18,7 @@ public class CameraFollow : MonoBehaviour
 
     private void Awake()
     {
+	//Teste camera
         cam = GetComponent<Camera>();
         Target = FindObjectOfType<CharacterController>().transform;
     }
